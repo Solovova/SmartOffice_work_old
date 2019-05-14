@@ -45,7 +45,7 @@ class MasterSensorIndicator(_typeEnum: SensorIndicatorTypeEnum, _sensor: MasterS
         }
     }
 
-    private fun setIndicatorValue(_value: Double){
+    fun setIndicatorValue(_value: Double){
         this.indicatorOldValue = this.indicatorValue
         this.indicatorValueTime = SystemClock.currentThreadTimeMillis()
         this.indicatorValue = _value
@@ -54,5 +54,9 @@ class MasterSensorIndicator(_typeEnum: SensorIndicatorTypeEnum, _sensor: MasterS
 
     fun eventDataIn(sensorIndicatorDataRecord: SensorIndicatorDataRecord) {
         this.setIndicatorValue(sensorIndicatorDataRecord.indicatorValue)
+    }
+
+    fun getSensorIndicatorDataRecord() : SensorIndicatorDataRecord {
+        return SensorIndicatorDataRecord(sensor.sensorID, this.typeEnum,this.indicatorValue)
     }
 }

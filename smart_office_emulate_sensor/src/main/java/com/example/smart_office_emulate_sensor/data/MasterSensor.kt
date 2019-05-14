@@ -4,7 +4,7 @@ import com.example.smart_office_lib.SensorIndicatorDataRecord
 import com.example.smart_office_lib.SensorIndicatorTypeEnum
 
 class MasterSensor(_sensorID: String, _sensorContainer: MasterSensorContainer) {
-    private var indicators = mutableListOf<MasterSensorIndicator>()
+    var indicators = mutableListOf<MasterSensorIndicator>()
     var sensorID: String = _sensorID
     var sensorName: String = ""
     val sensorContainer: MasterSensorContainer = _sensorContainer

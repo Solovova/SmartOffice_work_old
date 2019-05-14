@@ -3,13 +3,18 @@ package com.example.smart_office_emulate_sensor
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.SeekBar
+import com.example.smart_office_lib.SensorIndicatorDataRecord
+import com.example.smart_office_lib.SensorIndicatorTypeEnum
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionBuilder
 import com.microsoft.signalr.HubConnectionState
+import org.json.JSONArray
+import org.json.JSONObject
 
 
 class MainActivity : AppCompatActivity() {
@@ -29,6 +34,23 @@ class MainActivity : AppCompatActivity() {
 
         hubConnection = HubConnectionBuilder.create("http://10.0.2.2:5000/movehub").build()
 
+        hubConnection?.on("RequestStartSensorDataToSensor", { strID:String->
+            try{
+                Log.i("StartSensorDataToSensor",strID)
+                val jArray = JSONArray()
+                jArray.put(strID)
+                val sensor = (application as SOApplicationEmulator).sensorContainer.sensors[strID]
+                if (sensor != null) {
+                    for (indicator in sensor.indicators) {
+                        val jObject = indicator.getSensorIndicatorDataRecord().getJSObject()
+                        jArray.put(jObject)
+                    }
+                }
+                hubConnection?.send("AnswerStartSensorDataFromSensor",jArray.toString())
+            }catch (e: java.lang.Exception){}
+
+        }, String::class.java)
+
 
         val seekBarChangeListener0 = object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
@@ -38,7 +60,7 @@ class MainActivity : AppCompatActivity() {
                 val teSensorIndicator = findViewById<EditText>(R.id.teSensorIndicator)
                 teSensorIndicator.text = Editable.Factory.getInstance().newEditable("0")
 
-                Send()
+                send()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -61,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                 val teSensorIndicator = findViewById<EditText>(R.id.teSensorIndicator)
                 teSensorIndicator.text = Editable.Factory.getInstance().newEditable("1")
 
-                Send()
+                send()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -84,7 +106,7 @@ class MainActivity : AppCompatActivity() {
                 val teSensorIndicator = findViewById<EditText>(R.id.teSensorIndicator)
                 teSensorIndicator.text = Editable.Factory.getInstance().newEditable("2")
 
-                Send()
+                send()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -107,7 +129,7 @@ class MainActivity : AppCompatActivity() {
                 val teSensorIndicator = findViewById<EditText>(R.id.teSensorIndicator)
                 teSensorIndicator.text = Editable.Factory.getInstance().newEditable("3")
 
-                Send()
+                send()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar) {
@@ -136,6 +158,7 @@ class MainActivity : AppCompatActivity() {
                         hubConnection.stop()
                     }
                     btnStart.text="start"
+
                 }
             }
         }
@@ -143,14 +166,19 @@ class MainActivity : AppCompatActivity() {
 
 
         val onClickListenerSend = View.OnClickListener {
-            this.Send()
+            this.send()
         }
         btnSend?.setOnClickListener(onClickListenerSend)
 
 
     }
 
-    private fun Send() {
+    // Server -> Android <sensorIndicatorDataRecord> set Android SensorIndicator
+    // Android -> Server request String: ID  request for get start data for Sensor
+    //      Server -> Android answer [sensorIndicatorDataRecord,..] array of start data for each SensorIndicator
+    //               by this answer Android add or delete SensorIndicator in Sensor
+
+    private fun send() {
         val hubConnection = this.hubConnection
         if (hubConnection != null) {
             if (hubConnection.connectionState == HubConnectionState.CONNECTED) {
@@ -158,10 +186,11 @@ class MainActivity : AppCompatActivity() {
                     val teSensorID = findViewById<EditText>(R.id.teSensorID)
                     val teSensorIndicator = findViewById<EditText>(R.id.teSensorIndicator)
                     val teValue = findViewById<EditText>(R.id.teValue)
-                    val mSensorID:String = teSensorID.text.toString()
-                    val mSensorIndicator:String = teSensorIndicator.text.toString()
-                    val mValue:String = teValue.text.toString()
-                    hubConnection.send("MoveViewFromServer",mSensorID,mSensorIndicator,mValue)
+                    val mSensorID        = teSensorID.text.toString()
+                    val mSensorIndicator = SensorIndicatorTypeEnum.values()[teSensorIndicator.text.toString().toInt()]
+                    val mValue = teValue.text.toString().toDouble()
+                    val sensorIndicatorDataRecord = SensorIndicatorDataRecord(mSensorID,mSensorIndicator,mValue)
+                    hubConnection.send("SensorIndicatorChangeValueFromSensor",sensorIndicatorDataRecord.getJSObject().toString())
                 }catch (e: Exception) {}
             }
         }

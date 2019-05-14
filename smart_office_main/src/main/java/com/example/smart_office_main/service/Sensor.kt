@@ -42,7 +42,7 @@ class Sensor(_sensorID: String, _sensorContainer: SensorContainer) {
         this.sensorIndicatorContainer = null
     }
 
-    private fun createSensorIndicatorButton(){
+     fun createSensorIndicatorButton(){
         val sensorIndicatorContainer = this.sensorIndicatorContainer
         if (sensorIndicatorContainer != null) {
             if (sensorIndicatorContainer.childCount > 0) sensorIndicatorContainer.removeAllViews()
@@ -62,7 +62,7 @@ class Sensor(_sensorID: String, _sensorContainer: SensorContainer) {
         }
     }
 
-    fun testGenerateData(testSensorIndicatorTypeEnum : Array<SensorIndicatorTypeEnum>?) {
+    fun testGenerateData(testSensorIndicatorTypeEnum : List<SensorIndicatorTypeEnum>?) {
         if (testSensorIndicatorTypeEnum == null) return
         var sensorIndicator: SensorIndicator
         for (ind in 0 until testSensorIndicatorTypeEnum.size) {
@@ -97,4 +97,9 @@ class Sensor(_sensorID: String, _sensorContainer: SensorContainer) {
         fragmentSensor?.refreshHead()
         sensorContainer.onChangeSensor()
     }
+
+    fun deleteIndicators() {
+        this.indicators =  mutableListOf<SensorIndicator>()
+    }
+
 }

@@ -73,4 +73,6 @@ class SensorIndicator(_typeEnum: SensorIndicatorTypeEnum, _sensor: Sensor) {
     fun eventDataIn(sensorIndicatorDataRecord: SensorIndicatorDataRecord) {
         this.setIndicatorValue(sensorIndicatorDataRecord.indicatorValue)
     }
+
+
 }

@@ -55,14 +55,12 @@ class MasterSensorContainer {
     }
 
     fun testGenerateData() {
-        val testSensorID: Array<String> = arrayOf("id123432", "id999797", "id999997")
+        val testSensorID: Array<String> = arrayOf("id001", "id999797", "id999997")
         val testSensorName: Array<String> = arrayOf("Room 8", "Room 2", "Room 7")
 
         val testSensorIndicator = mutableMapOf<String,Array<SensorIndicatorTypeEnum>>()
         testSensorIndicator[testSensorID[0]] = arrayOf(
             SensorIndicatorTypeEnum.Temperature,
-            SensorIndicatorTypeEnum.Brightness,
-            SensorIndicatorTypeEnum.Co2,
             SensorIndicatorTypeEnum.Humidity
         )
 
@@ -85,6 +83,7 @@ class MasterSensorContainer {
             sensor.testGenerateData(testSensorIndicator[testSensorID[ind]])
             sensors[testSensorID[ind]] = sensor
         }
+        sensors["id001"]?.indicators!![1].setIndicatorValue(55.0)
     }
 
     fun onChangeSensor(){

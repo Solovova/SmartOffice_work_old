@@ -10,6 +10,6 @@ class SOApplicationEmulator : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        //this.sensorContainer.testGenerateData()
+        this.sensorContainer.testGenerateData()
     }
 }

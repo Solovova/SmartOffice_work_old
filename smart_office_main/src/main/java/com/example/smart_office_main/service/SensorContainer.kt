@@ -14,6 +14,8 @@ import com.microsoft.signalr.HubConnectionBuilder
 import com.microsoft.signalr.HubConnectionState
 import java.lang.Exception
 import com.example.smart_office_main.R
+import org.json.JSONArray
+import org.json.JSONObject
 
 
 class SensorContainer(_app: SOApplication) {
@@ -47,21 +49,33 @@ class SensorContainer(_app: SOApplication) {
 //            //app?.mainActivity?.runOnUiThread {this.eventDataIn(testDataRecordIndicator)}
 //        }, String::class.java, Int::class.java, Float::class.java)
 
-        hubConnection?.on("ReceiveNewPositions", { mID:String, mIndicator:String, mValue:String->
+        hubConnection?.on("SensorIndicatorChangeValueToApp", { strJSON:String->
             try{
-                Log.i("RECEIVE","$mID  $mIndicator $mValue")
-                val mtIndicator = mIndicator.toInt()
-                val mtValue = mValue.toFloat()
-                val testDataRecordIndicator = SensorIndicatorDataRecord(
-                    mID,
-                    SensorIndicatorTypeEnum.values()[mtIndicator],
-                    mtValue.toDouble()
-                )
-                app?.mainActivity?.runOnUiThread {this.eventDataIn(testDataRecordIndicator)}
+                Log.i("RECEIVE",strJSON)
+                val sensorIndicatorDataRecord = SensorIndicatorDataRecord(JSONObject(strJSON))
+                app?.mainActivity?.runOnUiThread {this.eventDataIn(sensorIndicatorDataRecord)}
             }catch (e: Exception){}
 
-        }, String::class.java, String::class.java , String::class.java)
+        }, String::class.java)
 
+
+        hubConnection?.on("AnswerStartSensorDataToApp", { strJSONArray:String->
+            try{
+                Log.i("AnswerStartSensorData",strJSONArray)
+                val jArray = JSONArray(strJSONArray)
+                val sensor = sensors[jArray.getString(0)]
+                if (sensor != null) {
+                    sensor.deleteIndicators()
+                    val testSensorIndicator = mutableListOf<SensorIndicatorTypeEnum>()
+                    for (ind in 1 until jArray.length()) {
+                        testSensorIndicator.add(SensorIndicatorTypeEnum.values()[jArray.getJSONObject(ind).getInt("indicatorTypeEnum")])
+                    }
+                    sensor.testGenerateData(testSensorIndicator)
+                    sensor.createSensorIndicatorButton()
+                }
+            }catch (e: Exception){}
+
+        }, String::class.java)
 
         //end hub connection
         var tmpDataIndicatorTypeDef = SensorIndicatorDef()
@@ -144,16 +158,6 @@ class SensorContainer(_app: SOApplication) {
                             Log.i("RECEIVE", "CONNECTED")
                         }
                     }
-
-
-//                    val mHubConnection = this.hubConnection
-//                    if (mHubConnection != null) {
-//                        if (mHubConnection.connectionState === HubConnectionState.DISCONNECTED)
-//                            app?.mainActivity?.runOnUiThread {this.eventDataIn(this.testDataFlow.getNextTestRecord())}
-//                    }else{
-//                        app?.mainActivity?.runOnUiThread {this.eventDataIn(this.testDataFlow.getNextTestRecord())}
-//                    }
-
                     SystemClock.sleep(1000)
                 }
             }
@@ -198,20 +202,20 @@ class SensorContainer(_app: SOApplication) {
         val testSensorID: Array<String> = arrayOf("id123432", "id999797", "id999997")
         val testSensorName: Array<String> = arrayOf("Room 8", "Room 2", "Room 7")
 
-        val testSensorIndicator = mutableMapOf<String,Array<SensorIndicatorTypeEnum>>()
-        testSensorIndicator[testSensorID[0]] = arrayOf(
+        val testSensorIndicator = mutableMapOf<String, List<SensorIndicatorTypeEnum>>()
+        testSensorIndicator[testSensorID[0]] = mutableListOf(
             SensorIndicatorTypeEnum.Temperature,
             SensorIndicatorTypeEnum.Brightness,
             SensorIndicatorTypeEnum.Co2,
             SensorIndicatorTypeEnum.Humidity
             )
 
-        testSensorIndicator[testSensorID[1]] = arrayOf(
+        testSensorIndicator[testSensorID[1]] = mutableListOf(
             SensorIndicatorTypeEnum.Temperature,
             SensorIndicatorTypeEnum.Humidity
         )
 
-        testSensorIndicator[testSensorID[2]] = arrayOf(
+        testSensorIndicator[testSensorID[2]] = mutableListOf(
             SensorIndicatorTypeEnum.Temperature,
             SensorIndicatorTypeEnum.Humidity,
             SensorIndicatorTypeEnum.Brightness
@@ -246,16 +250,29 @@ class SensorContainer(_app: SOApplication) {
         val sensor = Sensor(_id, this)
         sensor.setName(_id)
 
-        val testSensorIndicator = arrayOf(
-            SensorIndicatorTypeEnum.Temperature,
-            SensorIndicatorTypeEnum.Humidity,
-            SensorIndicatorTypeEnum.Brightness
-        )
+        if (!sendRequestStartSensorData(sensor)) {
+            val testSensorIndicator = mutableListOf(
+                SensorIndicatorTypeEnum.Temperature ,
+                SensorIndicatorTypeEnum.Humidity ,
+                SensorIndicatorTypeEnum.Brightness
+            )
+            sensor.testGenerateData(testSensorIndicator)
+        }
 
-        sensor.testGenerateData(testSensorIndicator)
         sensors[_id] = sensor
         this.createSensorButtons()
         return "OK"
+    }
+
+    private fun sendRequestStartSensorData(sensor: Sensor): Boolean {
+        val hubConnection = this.hubConnection
+        if (hubConnection != null) {
+            if (hubConnection.connectionState === HubConnectionState.CONNECTED) {
+                hubConnection.send("RequestStartSensorDataFromApp",sensor.sensorID)
+                return true
+            }
+        }
+        return false
     }
 
     fun setLinkToViewNull(){

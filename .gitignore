@@ -11,3 +11,6 @@
 /build
 /captures
 .externalNativeBuild
+/barcode-reader/build
+/smart_office_emulate_sensor/build
+/smart_office_main/build

@@ -11,7 +11,7 @@ import android.widget.TextView
 import com.example.smart_office_main.MainActivity
 import com.example.smart_office_main.R
 import com.example.smart_office_main.service.Sensor
-import com.example.smart_office_main.dataclass.SensorIndicatorTypeEnum
+import com.example.smart_office_lib.SensorIndicatorTypeEnum
 
 class SensorButton(context: Context) : ConstraintLayout(context) {
     private var textMain: TextView

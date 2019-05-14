@@ -10,6 +10,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/barcode-reader" />
             <option value="$PROJECT_DIR$/smart_office_emulate_sensor" />
+            <option value="$PROJECT_DIR$/smart_office_lib" />
             <option value="$PROJECT_DIR$/smart_office_main" />
           </set>
         </option>

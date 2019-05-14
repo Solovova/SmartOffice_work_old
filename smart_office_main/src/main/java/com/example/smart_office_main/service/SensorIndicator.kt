@@ -1,10 +1,10 @@
 package com.example.smart_office_main.service
 
 import com.example.smart_office_main.soviews.SensorIndicatorButton
-import com.example.smart_office_main.dataclass.SensorIndicatorTypeEnum
-import com.example.smart_office_main.dataclass.SensorIndicatorDataRecord
+import com.example.smart_office_lib.SensorIndicatorTypeEnum
+import com.example.smart_office_lib.SensorIndicatorDataRecord
 import android.os.SystemClock
-import com.example.smart_office_main.dataclass.SensorIndicatorDef
+import com.example.smart_office_lib.SensorIndicatorDef
 
 
 class SensorIndicator(_typeEnum: SensorIndicatorTypeEnum, _sensor: Sensor) {

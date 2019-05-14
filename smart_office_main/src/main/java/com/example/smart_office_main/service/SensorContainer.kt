@@ -1,19 +1,19 @@
 package com.example.smart_office_main.service
 
 import android.widget.LinearLayout
-import com.example.smart_office_main.dataclass.SensorIndicatorDef
-import com.example.smart_office_main.dataclass.SensorIndicatorTypeEnum
+import com.example.smart_office_lib.SensorIndicatorDef
+import com.example.smart_office_lib.SensorIndicatorTypeEnum
 import com.example.smart_office_main.soviews.SensorButton
-import com.example.smart_office_main.R
 import android.os.SystemClock
 import android.util.Log
 import com.example.smart_office_main.SOApplication
 import com.example.smart_office_main.test.TestDataFlow
-import com.example.smart_office_main.dataclass.SensorIndicatorDataRecord
+import com.example.smart_office_lib.SensorIndicatorDataRecord
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionBuilder
 import com.microsoft.signalr.HubConnectionState
 import java.lang.Exception
+import com.example.smart_office_main.R
 
 
 class SensorContainer(_app: SOApplication) {

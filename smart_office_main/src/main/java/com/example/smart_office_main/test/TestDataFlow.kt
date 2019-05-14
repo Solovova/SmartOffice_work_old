@@ -1,7 +1,7 @@
 package com.example.smart_office_main.test
 
-import com.example.smart_office_main.dataclass.SensorIndicatorTypeEnum
-import com.example.smart_office_main.dataclass.SensorIndicatorDataRecord
+import com.example.smart_office_lib.SensorIndicatorTypeEnum
+import com.example.smart_office_lib.SensorIndicatorDataRecord
 
 class TestDataFlow {
     private var sensorIndicatorData:MutableList<SensorIndicatorDataRecord> = mutableListOf()

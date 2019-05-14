@@ -1,11 +1,11 @@
 package com.example.smart_office_main.service
 
 import android.widget.LinearLayout
-import com.example.smart_office_main.dataclass.SensorIndicatorTypeEnum
+import com.example.smart_office_lib.SensorIndicatorTypeEnum
 import com.example.smart_office_main.fragments.FragmentSensor
 import com.example.smart_office_main.soviews.SensorButton
 import com.example.smart_office_main.soviews.SensorIndicatorButton
-import com.example.smart_office_main.dataclass.SensorIndicatorDataRecord
+import com.example.smart_office_lib.SensorIndicatorDataRecord
 
 class Sensor(_sensorID: String, _sensorContainer: SensorContainer) {
     private var indicators = mutableListOf<SensorIndicator>()

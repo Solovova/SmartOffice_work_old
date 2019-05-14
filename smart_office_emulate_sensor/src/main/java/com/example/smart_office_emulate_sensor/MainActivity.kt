@@ -17,9 +17,12 @@ class MainActivity : AppCompatActivity() {
     private var btnSend: Button? = null
     var hubConnection: HubConnection? = null
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //Logic
 
         this.btnStart = findViewById(R.id.buttonServer)
         this.btnSend = findViewById(R.id.buttonSend)

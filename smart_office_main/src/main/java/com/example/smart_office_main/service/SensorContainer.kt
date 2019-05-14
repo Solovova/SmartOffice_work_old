@@ -1,15 +1,15 @@
 package com.example.smart_office_main.service
 
 import android.widget.LinearLayout
-import com.example.smart_office_main.dataclass.DataIndicatorTypeDef
-import com.example.smart_office_main.dataclass.EnumIndicatorsType
+import com.example.smart_office_main.dataclass.SensorIndicatorDef
+import com.example.smart_office_main.dataclass.SensorIndicatorTypeEnum
 import com.example.smart_office_main.soviews.SensorButton
 import com.example.smart_office_main.R
 import android.os.SystemClock
 import android.util.Log
 import com.example.smart_office_main.SOApplication
 import com.example.smart_office_main.test.TestDataFlow
-import com.example.smart_office_main.test.TestDataRecordIndicator
+import com.example.smart_office_main.dataclass.SensorIndicatorDataRecord
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionBuilder
 import com.microsoft.signalr.HubConnectionState
@@ -19,7 +19,7 @@ import java.lang.Exception
 class SensorContainer(_app: SOApplication) {
     private var myThread: Thread? = null
     var sensors = mutableMapOf<String, Sensor>()
-    private var sensorIndicatorDef = mutableMapOf<EnumIndicatorsType, DataIndicatorTypeDef>()
+    private var sensorIndicatorDef = mutableMapOf<SensorIndicatorTypeEnum, SensorIndicatorDef>()
     private var viewContainer : LinearLayout? = null
     private var testDataFlow: TestDataFlow =
         TestDataFlow()
@@ -43,7 +43,7 @@ class SensorContainer(_app: SOApplication) {
 
 //        hubConnection?.on("ReceiveNewPositions", { mID, mIndicator, mValue ->
 //            Log.i("RECEIVE",mID)
-//            //val testDataRecordIndicator = TestDataRecordIndicator(mID,EnumIndicatorsType.values()[mIndicator],mValue.toDouble())
+//            //val testDataRecordIndicator = SensorIndicatorDataRecord(mID,SensorIndicatorTypeEnum.values()[mIndicator],mValue.toDouble())
 //            //app?.mainActivity?.runOnUiThread {this.eventDataIn(testDataRecordIndicator)}
 //        }, String::class.java, Int::class.java, Float::class.java)
 
@@ -52,9 +52,9 @@ class SensorContainer(_app: SOApplication) {
                 Log.i("RECEIVE","$mID  $mIndicator $mValue")
                 val mtIndicator = mIndicator.toInt()
                 val mtValue = mValue.toFloat()
-                val testDataRecordIndicator = TestDataRecordIndicator(
+                val testDataRecordIndicator = SensorIndicatorDataRecord(
                     mID,
-                    EnumIndicatorsType.values()[mtIndicator],
+                    SensorIndicatorTypeEnum.values()[mtIndicator],
                     mtValue.toDouble()
                 )
                 app?.mainActivity?.runOnUiThread {this.eventDataIn(testDataRecordIndicator)}
@@ -64,7 +64,7 @@ class SensorContainer(_app: SOApplication) {
 
 
         //end hub connection
-        var tmpDataIndicatorTypeDef = DataIndicatorTypeDef()
+        var tmpDataIndicatorTypeDef = SensorIndicatorDef()
         with(tmpDataIndicatorTypeDef) {
             defValue = 20.0
             defAlarmBorder          = arrayOf(19.0, 26.0)
@@ -80,8 +80,8 @@ class SensorContainer(_app: SOApplication) {
             defDescribe             = "Temperature"
             defTextDescribe         = "\tDescribe for Temperature"
         }
-        sensorIndicatorDef[EnumIndicatorsType.Temperature] = tmpDataIndicatorTypeDef
-        tmpDataIndicatorTypeDef = DataIndicatorTypeDef()
+        sensorIndicatorDef[SensorIndicatorTypeEnum.Temperature] = tmpDataIndicatorTypeDef
+        tmpDataIndicatorTypeDef = SensorIndicatorDef()
         with(tmpDataIndicatorTypeDef) {
             defValue = 400.0
             defAlarmBorder          = arrayOf(200.0, 600.0)
@@ -97,8 +97,8 @@ class SensorContainer(_app: SOApplication) {
             defDescribe             = "Brightness"
             defTextDescribe         = "\tDescribe for Brightness"
         }
-        sensorIndicatorDef[EnumIndicatorsType.Brightness] = tmpDataIndicatorTypeDef
-        tmpDataIndicatorTypeDef = DataIndicatorTypeDef()
+        sensorIndicatorDef[SensorIndicatorTypeEnum.Brightness] = tmpDataIndicatorTypeDef
+        tmpDataIndicatorTypeDef = SensorIndicatorDef()
         with(tmpDataIndicatorTypeDef) {
             defValue = 800.0
             defAlarmBorder          = arrayOf(1000.0, 1400.0)
@@ -114,8 +114,8 @@ class SensorContainer(_app: SOApplication) {
             defDescribe             = "Co2"
             defTextDescribe         = "\tCarbon dioxide at levels that are unusually high indoors may cause occupants to grow drowsy, to get headaches, or to function at lower activity levels. \n \tOutdoor CO2 levels are usually 350-450 ppm whereas the maximum indoor CO2 level considered acceptable is 1000 ppm. Keep this value lowe as possible."
         }
-        sensorIndicatorDef[EnumIndicatorsType.Co2] = tmpDataIndicatorTypeDef
-        tmpDataIndicatorTypeDef = DataIndicatorTypeDef()
+        sensorIndicatorDef[SensorIndicatorTypeEnum.Co2] = tmpDataIndicatorTypeDef
+        tmpDataIndicatorTypeDef = SensorIndicatorDef()
         with(tmpDataIndicatorTypeDef) {
             defValue = 50.0
             defAlarmBorder          = arrayOf(70.0, 90.0)
@@ -131,7 +131,7 @@ class SensorContainer(_app: SOApplication) {
             defDescribe             = "Humidity"
             defTextDescribe         = "\tDescribe for Humidity"
         }
-        sensorIndicatorDef[EnumIndicatorsType.Humidity] = tmpDataIndicatorTypeDef
+        sensorIndicatorDef[SensorIndicatorTypeEnum.Humidity] = tmpDataIndicatorTypeDef
         this.myThread = Thread(
             Runnable {
                 while (true) {
@@ -188,9 +188,9 @@ class SensorContainer(_app: SOApplication) {
         }
     }
 
-    fun getDataIndicatorTypeDef(_type: EnumIndicatorsType): DataIndicatorTypeDef {
-        val dataIndicatorTypeDef = sensorIndicatorDef[_type]
-        dataIndicatorTypeDef ?: return DataIndicatorTypeDef()
+    fun getDataIndicatorTypeDef(_typeEnum: SensorIndicatorTypeEnum): SensorIndicatorDef {
+        val dataIndicatorTypeDef = sensorIndicatorDef[_typeEnum]
+        dataIndicatorTypeDef ?: return SensorIndicatorDef()
         return dataIndicatorTypeDef
     }
 
@@ -198,23 +198,23 @@ class SensorContainer(_app: SOApplication) {
         val testSensorID: Array<String> = arrayOf("id123432", "id999797", "id999997")
         val testSensorName: Array<String> = arrayOf("Room 8", "Room 2", "Room 7")
 
-        val testSensorIndicator = mutableMapOf<String,Array<EnumIndicatorsType>>()
+        val testSensorIndicator = mutableMapOf<String,Array<SensorIndicatorTypeEnum>>()
         testSensorIndicator[testSensorID[0]] = arrayOf(
-            EnumIndicatorsType.Temperature,
-            EnumIndicatorsType.Brightness,
-            EnumIndicatorsType.Co2,
-            EnumIndicatorsType.Humidity
+            SensorIndicatorTypeEnum.Temperature,
+            SensorIndicatorTypeEnum.Brightness,
+            SensorIndicatorTypeEnum.Co2,
+            SensorIndicatorTypeEnum.Humidity
             )
 
         testSensorIndicator[testSensorID[1]] = arrayOf(
-            EnumIndicatorsType.Temperature,
-            EnumIndicatorsType.Humidity
+            SensorIndicatorTypeEnum.Temperature,
+            SensorIndicatorTypeEnum.Humidity
         )
 
         testSensorIndicator[testSensorID[2]] = arrayOf(
-            EnumIndicatorsType.Temperature,
-            EnumIndicatorsType.Humidity,
-            EnumIndicatorsType.Brightness
+            SensorIndicatorTypeEnum.Temperature,
+            SensorIndicatorTypeEnum.Humidity,
+            SensorIndicatorTypeEnum.Brightness
         )
 
 
@@ -227,9 +227,9 @@ class SensorContainer(_app: SOApplication) {
         }
     }
 
-    private fun eventDataIn(testDataRecordIndicator: TestDataRecordIndicator) {
-        val sensor = this.sensors[testDataRecordIndicator.sensorId]
-        sensor?.eventDataIn(testDataRecordIndicator)
+    private fun eventDataIn(sensorIndicatorDataRecord: SensorIndicatorDataRecord) {
+        val sensor = this.sensors[sensorIndicatorDataRecord.sensorId]
+        sensor?.eventDataIn(sensorIndicatorDataRecord)
     }
 
     fun onChangeSensor(){
@@ -247,9 +247,9 @@ class SensorContainer(_app: SOApplication) {
         sensor.setName(_id)
 
         val testSensorIndicator = arrayOf(
-            EnumIndicatorsType.Temperature,
-            EnumIndicatorsType.Humidity,
-            EnumIndicatorsType.Brightness
+            SensorIndicatorTypeEnum.Temperature,
+            SensorIndicatorTypeEnum.Humidity,
+            SensorIndicatorTypeEnum.Brightness
         )
 
         sensor.testGenerateData(testSensorIndicator)

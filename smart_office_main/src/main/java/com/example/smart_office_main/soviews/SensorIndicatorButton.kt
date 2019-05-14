@@ -35,21 +35,21 @@ class SensorIndicatorButton(context: Context) : ConstraintLayout(context) {
     fun refreshValue() {
         val sensorIndicator = this.sensorIndicator
         if (sensorIndicator != null) {
-            visualTextValue.text = String.format(sensorIndicator.dataIndicatorTypeDef.defFormatString, sensorIndicator.getIndicatorValue())
+            visualTextValue.text = String.format(sensorIndicator.sensorIndicatorDef.defFormatString, sensorIndicator.getIndicatorValue())
             val alarmCode = sensorIndicator.getAlarmCode()
             if (alarmCode != 0) {
                 this.visualAlarmImage.visibility = View.VISIBLE
                 this.visualAlarmText.visibility = View.VISIBLE
                 this.visualAlarmTextEx.visibility = View.GONE
-                this.visualAlarmText.setTextColor(ContextCompat.getColor(context, sensorIndicator.dataIndicatorTypeDef.defTextAlarmIdColor[alarmCode]))
-                this.visualAlarmText.text = sensorIndicator.dataIndicatorTypeDef.defTextAlarm[alarmCode]
-                this.visualAlarmImage.setBackgroundResource(sensorIndicator.dataIndicatorTypeDef.defTextAlarmIdImage[alarmCode])
+                this.visualAlarmText.setTextColor(ContextCompat.getColor(context, sensorIndicator.sensorIndicatorDef.defTextAlarmIdColor[alarmCode]))
+                this.visualAlarmText.text = sensorIndicator.sensorIndicatorDef.defTextAlarm[alarmCode]
+                this.visualAlarmImage.setBackgroundResource(sensorIndicator.sensorIndicatorDef.defTextAlarmIdImage[alarmCode])
             }else{
                 this.visualAlarmImage.visibility = View.GONE
                 this.visualAlarmText.visibility = View.GONE
                 this.visualAlarmTextEx.visibility = View.VISIBLE
-                this.visualAlarmTextEx.setTextColor(ContextCompat.getColor(context, sensorIndicator.dataIndicatorTypeDef.defTextAlarmIdColor[alarmCode]))
-                this.visualAlarmTextEx.text = sensorIndicator.dataIndicatorTypeDef.defTextAlarm[alarmCode]
+                this.visualAlarmTextEx.setTextColor(ContextCompat.getColor(context, sensorIndicator.sensorIndicatorDef.defTextAlarmIdColor[alarmCode]))
+                this.visualAlarmTextEx.text = sensorIndicator.sensorIndicatorDef.defTextAlarm[alarmCode]
             }
         }
     }
@@ -57,7 +57,7 @@ class SensorIndicatorButton(context: Context) : ConstraintLayout(context) {
     private fun refreshAll() {
         val sensorIndicator = this.sensorIndicator
         if (sensorIndicator != null) {
-            val dataIndicatorTypeDef =  sensorIndicator.sensor.sensorContainer.getDataIndicatorTypeDef(sensorIndicator.type)
+            val dataIndicatorTypeDef =  sensorIndicator.sensor.sensorContainer.getDataIndicatorTypeDef(sensorIndicator.typeEnum)
             this.visualTextViewUp.text = dataIndicatorTypeDef.defDescribe
             this.visualImageBig.setImageResource(dataIndicatorTypeDef.idBigPicture)
             this.visualTextValueSign.text = dataIndicatorTypeDef.defDescribeValue

@@ -1,88 +1,89 @@
 package com.example.smart_office_main.test
 
-import com.example.smart_office_main.dataclass.EnumIndicatorsType
+import com.example.smart_office_main.dataclass.SensorIndicatorTypeEnum
+import com.example.smart_office_main.dataclass.SensorIndicatorDataRecord
 
 class TestDataFlow {
-    private var testData:MutableList<TestDataRecordIndicator> = mutableListOf()
+    private var sensorIndicatorData:MutableList<SensorIndicatorDataRecord> = mutableListOf()
     private var nextInd: Int = -1
 
     init {
         this.nextInd = -1
-        testData.add(
-            TestDataRecordIndicator(
+        sensorIndicatorData.add(
+            SensorIndicatorDataRecord(
                 "id123432",
-                EnumIndicatorsType.Temperature,
+                SensorIndicatorTypeEnum.Temperature,
                 18.0
             )
         )
-        testData.add(
-            TestDataRecordIndicator(
+        sensorIndicatorData.add(
+            SensorIndicatorDataRecord(
                 "id123432",
-                EnumIndicatorsType.Temperature,
+                SensorIndicatorTypeEnum.Temperature,
                 20.0
             )
         )
-        testData.add(
-            TestDataRecordIndicator(
+        sensorIndicatorData.add(
+            SensorIndicatorDataRecord(
                 "id123432",
-                EnumIndicatorsType.Temperature,
+                SensorIndicatorTypeEnum.Temperature,
                 36.0
             )
         )
-        testData.add(
-            TestDataRecordIndicator(
+        sensorIndicatorData.add(
+            SensorIndicatorDataRecord(
                 "id123432",
-                EnumIndicatorsType.Co2,
+                SensorIndicatorTypeEnum.Co2,
                 1100.0
             )
         )
-        testData.add(
-            TestDataRecordIndicator(
+        sensorIndicatorData.add(
+            SensorIndicatorDataRecord(
                 "id123432",
-                EnumIndicatorsType.Co2,
+                SensorIndicatorTypeEnum.Co2,
                 1500.0
             )
         )
-        testData.add(
-            TestDataRecordIndicator(
+        sensorIndicatorData.add(
+            SensorIndicatorDataRecord(
                 "id123432",
-                EnumIndicatorsType.Co2,
+                SensorIndicatorTypeEnum.Co2,
                 800.0
             )
         )
-        testData.add(
-            TestDataRecordIndicator(
+        sensorIndicatorData.add(
+            SensorIndicatorDataRecord(
                 "id123432",
-                EnumIndicatorsType.Temperature,
+                SensorIndicatorTypeEnum.Temperature,
                 20.0
             )
         )
-        testData.add(
-            TestDataRecordIndicator(
+        sensorIndicatorData.add(
+            SensorIndicatorDataRecord(
                 "id123432",
-                EnumIndicatorsType.Co2,
+                SensorIndicatorTypeEnum.Co2,
                 1100.0
             )
         )
-        testData.add(
-            TestDataRecordIndicator(
+        sensorIndicatorData.add(
+            SensorIndicatorDataRecord(
                 "id123432",
-                EnumIndicatorsType.Co2,
+                SensorIndicatorTypeEnum.Co2,
                 1500.0
             )
         )
-        testData.add(
-            TestDataRecordIndicator(
+        sensorIndicatorData.add(
+            SensorIndicatorDataRecord(
                 "id123432",
-                EnumIndicatorsType.Co2,
+                SensorIndicatorTypeEnum.Co2,
                 800.0
             )
         )
     }
 
-    fun getNextTestRecord() : TestDataRecordIndicator {
+    fun getNextTestRecord() : SensorIndicatorDataRecord {
         this.nextInd++
-        if (this.nextInd >=testData.size) this.nextInd = 0
-        return testData[this.nextInd]
+        if (this.nextInd >=sensorIndicatorData.size) this.nextInd = 0
+        return sensorIndicatorData[this.nextInd]
     }
 }

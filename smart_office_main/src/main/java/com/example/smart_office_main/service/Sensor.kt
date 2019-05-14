@@ -1,11 +1,11 @@
 package com.example.smart_office_main.service
 
 import android.widget.LinearLayout
-import com.example.smart_office_main.dataclass.EnumIndicatorsType
+import com.example.smart_office_main.dataclass.SensorIndicatorTypeEnum
 import com.example.smart_office_main.fragments.FragmentSensor
 import com.example.smart_office_main.soviews.SensorButton
 import com.example.smart_office_main.soviews.SensorIndicatorButton
-import com.example.smart_office_main.test.TestDataRecordIndicator
+import com.example.smart_office_main.dataclass.SensorIndicatorDataRecord
 
 class Sensor(_sensorID: String, _sensorContainer: SensorContainer) {
     private var indicators = mutableListOf<SensorIndicator>()
@@ -62,20 +62,20 @@ class Sensor(_sensorID: String, _sensorContainer: SensorContainer) {
         }
     }
 
-    fun testGenerateData(testSensorIndicatorType : Array<EnumIndicatorsType>?) {
-        if (testSensorIndicatorType == null) return
+    fun testGenerateData(testSensorIndicatorTypeEnum : Array<SensorIndicatorTypeEnum>?) {
+        if (testSensorIndicatorTypeEnum == null) return
         var sensorIndicator: SensorIndicator
-        for (ind in 0 until testSensorIndicatorType.size) {
-            sensorIndicator = SensorIndicator(testSensorIndicatorType[ind], this)
+        for (ind in 0 until testSensorIndicatorTypeEnum.size) {
+            sensorIndicator = SensorIndicator(testSensorIndicatorTypeEnum[ind], this)
             sensorIndicator.testGenerateData()
             indicators.add(sensorIndicator)
         }
     }
 
-    fun getAlarmState(type: EnumIndicatorsType? = null): Int {
+    fun getAlarmState(typeEnum: SensorIndicatorTypeEnum? = null): Int {
         var maxAlarm  = 0
         for (indicator in indicators){
-            if (indicator.type == type || type == null ) {
+            if (indicator.typeEnum == typeEnum || typeEnum == null ) {
                 val tmpAlarm = indicator.getAlarmCode()
                 if (tmpAlarm > maxAlarm) maxAlarm = tmpAlarm
             }
@@ -83,10 +83,10 @@ class Sensor(_sensorID: String, _sensorContainer: SensorContainer) {
         return maxAlarm
     }
 
-    fun eventDataIn(testDataRecordIndicator: TestDataRecordIndicator) {
+    fun eventDataIn(sensorIndicatorDataRecord: SensorIndicatorDataRecord) {
         for (indicator in indicators) {
-            if (indicator.type == testDataRecordIndicator.indicatorType) {
-                indicator.eventDataIn(testDataRecordIndicator)
+            if (indicator.typeEnum == sensorIndicatorDataRecord.indicatorTypeEnum) {
+                indicator.eventDataIn(sensorIndicatorDataRecord)
                 break
             }
         }

@@ -1,19 +1,19 @@
 package com.example.smart_office_main.service
 
 import com.example.smart_office_main.soviews.SensorIndicatorButton
-import com.example.smart_office_main.dataclass.EnumIndicatorsType
-import com.example.smart_office_main.test.TestDataRecordIndicator
+import com.example.smart_office_main.dataclass.SensorIndicatorTypeEnum
+import com.example.smart_office_main.dataclass.SensorIndicatorDataRecord
 import android.os.SystemClock
-import com.example.smart_office_main.dataclass.DataIndicatorTypeDef
+import com.example.smart_office_main.dataclass.SensorIndicatorDef
 
 
-class SensorIndicator(_type: EnumIndicatorsType, _sensor: Sensor) {
+class SensorIndicator(_typeEnum: SensorIndicatorTypeEnum, _sensor: Sensor) {
     private var indicatorValue: Double
     private var indicatorOldValue: Double
     private var indicatorValueTime: Long
-    var dataIndicatorTypeDef: DataIndicatorTypeDef
+    var sensorIndicatorDef: SensorIndicatorDef
 
-    var type: EnumIndicatorsType = _type
+    var typeEnum: SensorIndicatorTypeEnum = _typeEnum
     val sensor: Sensor = _sensor
 
 
@@ -23,9 +23,9 @@ class SensorIndicator(_type: EnumIndicatorsType, _sensor: Sensor) {
     private var sensorIndicatorButton: SensorIndicatorButton? = null
 
     init {
-        this.dataIndicatorTypeDef =  _sensor.sensorContainer.getDataIndicatorTypeDef(this.type)
-        this.alarmBorder = dataIndicatorTypeDef.defAlarmBorder.clone()
-        this.indicatorValue = dataIndicatorTypeDef.defValue
+        this.sensorIndicatorDef =  _sensor.sensorContainer.getDataIndicatorTypeDef(this.typeEnum)
+        this.alarmBorder = sensorIndicatorDef.defAlarmBorder.clone()
+        this.indicatorValue = sensorIndicatorDef.defValue
         this.indicatorOldValue = 0.0
         this.indicatorValueTime = 0
     }
@@ -42,7 +42,7 @@ class SensorIndicator(_type: EnumIndicatorsType, _sensor: Sensor) {
     }
 
     fun getAlarmCode():Int {
-        val dataIndicatorTypeDef =  this.sensor.sensorContainer.getDataIndicatorTypeDef(this.type)
+        val dataIndicatorTypeDef =  this.sensor.sensorContainer.getDataIndicatorTypeDef(this.typeEnum)
         when (dataIndicatorTypeDef.defTypeOfAlarm) {
             0 -> {
                 if (this.indicatorValue <= this.alarmBorder[0]) return 1
@@ -70,7 +70,7 @@ class SensorIndicator(_type: EnumIndicatorsType, _sensor: Sensor) {
         sensor.onChangeSensorIndicator()
     }
 
-    fun eventDataIn(testDataRecordIndicator: TestDataRecordIndicator) {
-        this.setIndicatorValue(testDataRecordIndicator.indicatorValue)
+    fun eventDataIn(sensorIndicatorDataRecord: SensorIndicatorDataRecord) {
+        this.setIndicatorValue(sensorIndicatorDataRecord.indicatorValue)
     }
 }

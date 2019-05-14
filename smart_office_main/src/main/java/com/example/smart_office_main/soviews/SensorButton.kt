@@ -11,7 +11,7 @@ import android.widget.TextView
 import com.example.smart_office_main.MainActivity
 import com.example.smart_office_main.R
 import com.example.smart_office_main.service.Sensor
-import com.example.smart_office_main.dataclass.EnumIndicatorsType
+import com.example.smart_office_main.dataclass.SensorIndicatorTypeEnum
 
 class SensorButton(context: Context) : ConstraintLayout(context) {
     private var textMain: TextView
@@ -71,7 +71,7 @@ class SensorButton(context: Context) : ConstraintLayout(context) {
             var tImgBig: ImageView
             var tImgSmall: ImageView
             var tAlarm: Int
-            for (t_type in EnumIndicatorsType.values()) {
+            for (t_type in SensorIndicatorTypeEnum.values()) {
                 val dataIndicatorTypeDef =  sensor.sensorContainer.getDataIndicatorTypeDef(t_type)
                 tImgBig = imgBig[t_type.ordinal]
                 tImgSmall = imgSmall[t_type.ordinal]

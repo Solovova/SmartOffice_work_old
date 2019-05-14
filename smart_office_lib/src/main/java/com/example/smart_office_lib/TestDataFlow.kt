@@ -1,4 +1,4 @@
-package com.example.smart_office_main.test
+package com.example.smart_office_lib
 
 import com.example.smart_office_lib.SensorIndicatorTypeEnum
 import com.example.smart_office_lib.SensorIndicatorDataRecord

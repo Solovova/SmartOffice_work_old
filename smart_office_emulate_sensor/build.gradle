@@ -36,4 +36,5 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0-beta01'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-beta01'
     implementation 'com.microsoft.signalr:signalr:3.0.0-preview5-19227-01'
+    implementation project(path: ':smart_office_lib')
 }

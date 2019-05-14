@@ -7,7 +7,7 @@ import com.example.smart_office_main.soviews.SensorButton
 import android.os.SystemClock
 import android.util.Log
 import com.example.smart_office_main.SOApplication
-import com.example.smart_office_main.test.TestDataFlow
+import com.example.smart_office_lib.TestDataFlow
 import com.example.smart_office_lib.SensorIndicatorDataRecord
 import com.microsoft.signalr.HubConnection
 import com.microsoft.signalr.HubConnectionBuilder

@@ -10,6 +10,5 @@ class SOApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        this.sensorContainer.testGenerateData()
     }
 }

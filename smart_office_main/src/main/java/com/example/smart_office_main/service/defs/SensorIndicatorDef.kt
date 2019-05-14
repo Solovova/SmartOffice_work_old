@@ -1,4 +1,4 @@
-package com.example.smart_office_lib
+package com.example.smart_office_main.service.defs
 
 class SensorIndicatorDef {
     var defValue: Double = 0.0

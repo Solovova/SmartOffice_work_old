@@ -19,8 +19,6 @@ class Sensor(_sensorID: String, _sensorContainer: SensorContainer) {
 
     fun setName(_sensorName:String){
         this.sensorName = _sensorName
-        //sensorButton?.refreshAll()
-        //fragmentSensor?.refreshHead()
     }
 
     fun setLinkToSensorButton(sensorButton: SensorButton){
@@ -62,8 +60,8 @@ class Sensor(_sensorID: String, _sensorContainer: SensorContainer) {
         }
     }
 
-    fun testGenerateData(testSensorIndicatorTypeEnum : List<SensorIndicatorTypeEnum>?) {
-        if (testSensorIndicatorTypeEnum == null) return
+    //call if we work without SignalR
+    fun testGenerateData(testSensorIndicatorTypeEnum : List<SensorIndicatorTypeEnum>) {
         var sensorIndicator: SensorIndicator
         for (ind in 0 until testSensorIndicatorTypeEnum.size) {
             sensorIndicator = SensorIndicator(testSensorIndicatorTypeEnum[ind], this)
@@ -85,7 +83,7 @@ class Sensor(_sensorID: String, _sensorContainer: SensorContainer) {
 
     fun eventDataIn(sensorIndicatorDataRecord: SensorIndicatorDataRecord) {
         for (indicator in indicators) {
-            if (indicator.typeEnum == sensorIndicatorDataRecord.indicatorTypeEnum) {
+            if (indicator.typeEnum == sensorIndicatorDataRecord.type) {
                 indicator.eventDataIn(sensorIndicatorDataRecord)
                 break
             }

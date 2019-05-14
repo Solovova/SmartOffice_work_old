@@ -1,1 +1,1 @@
-include ':smart_office_main', ':barcode-reader', ':smart_office_emulate_sensor', ':smart_office_lib'
+include ':smart_office_main', ':barcode-reader', ':smart_office_emulate_sensor', ':smart_office_lib', ':smart_office_testdata'
